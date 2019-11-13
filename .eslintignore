@@ -1,0 +1,7 @@
+test
+dist
+node_modules
+package*.json
+src/*.stylus
+docs/**/*.ejs
+docs/**/*.html

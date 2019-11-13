@@ -1,0 +1,16 @@
+<%_ list = ['up', 'right', 'down', 'left'] _%>
+
+<% for (var i=0,len=list.length; i<len; i++) { %>
+<!-- <%= list[i] %> -->
+<div class="layui-dropdown is-<%= list[i] %>" id="example<%= i + 1 %>">
+  <button class="layui-btn layui-dropdown-toggle">
+    <%= list[i] %>
+    <i class="layui-icon layui-icon-<%= list[i] %>"></i>
+  </button>
+  <div class="layui-dropdown-menu">
+    <div style="width: 240px; height: 120px; background-image: linear-gradient(to <%= list[i].replace(/up/, 'top').replace(/down/, 'bottom') %>, transparent, orange);">
+      任意内容 <%= list[i] %>
+    </div>
+  </div>
+</div>
+<% } %>

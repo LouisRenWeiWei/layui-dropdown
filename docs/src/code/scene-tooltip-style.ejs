@@ -1,0 +1,37 @@
+.layui-tooltip .layui-dropdown-menu {
+  border-color: #000;
+  border-radius: 4px;
+  background-color: #000;
+  color: #fff;
+  text-align: center;
+  padding: 6px 10px;
+  min-height: 38px;
+  line-height: 24px;
+}
+
+.layui-tooltip .layui-dropdown-menu [x-arrow] {
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  border: 5px solid transparent;
+}
+
+.layui-tooltip .layui-dropdown-menu[x-placement^="top"] [x-arrow] {
+  top: 34px;
+  border-top-color: #000;
+}
+
+.layui-tooltip .layui-dropdown-menu[x-placement^="right"] [x-arrow] {
+  left: -15px;
+  border-right-color: #000;
+}
+
+.layui-tooltip .layui-dropdown-menu[x-placement^="bottom"] [x-arrow] {
+  top: -15px;
+  border-bottom-color: #000;
+}
+
+.layui-tooltip .layui-dropdown-menu[x-placement^="left"] [x-arrow] {
+  left: calc(100% - 2px);
+  border-left-color: #000;
+}

@@ -1,0 +1,40 @@
+{
+  "name": "dropdown",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "rollup -c",
+    "watch": "rollup -c -w",
+    "build": "rollup -c --environment NODE_ENV:production",
+    "docs": "node docs/create.js"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.4",
+    "@babel/preset-env": "^7.6.3",
+    "autoprefixer": "^9.7.1",
+    "chalk": "^2.4.2",
+    "cssnano": "^4.1.10",
+    "ejs": "^2.7.1",
+    "rollup": "^1.25.1",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-eslint": "^7.0.0",
+    "rollup-plugin-json": "^4.0.0",
+    "rollup-plugin-live-server": "^1.0.3",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-postcss": "^2.0.3",
+    "rollup-plugin-replace": "^2.2.0",
+    "rollup-plugin-uglify": "^6.0.3",
+    "stylus": "^0.54.7",
+    "stylus-loader": "^3.0.2"
+  },
+  "dependencies": {
+    "click-outside": "^2.0.2",
+    "debounce": "^1.2.0",
+    "popper.js": "^1.16.0",
+    "transitionEnd": "^1.0.2"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ]
+}

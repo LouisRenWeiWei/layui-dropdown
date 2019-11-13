@@ -1,0 +1,73 @@
+$color-black = #000
+$color-white = #fff
+$color-border = #d2d2d2
+$color-shadow = rgba($color-black, .12)
+$gutter = 5px
+
+// dropdown
+.layui-dropdown 
+  position relative
+  display inline-block
+
+  // dropdown-menu
+  &-menu
+    display none
+    z-index 100
+    min-width 100%
+    min-height 1px
+    margin 0
+    padding 0
+    border-radius 2px
+    border 1px solid $color-border
+    background-color $color-white
+    box-shadow 0 2px 4px $color-shadow
+    list-style none
+    box-sizing border-box
+
+    &:before
+      content "\20"
+      position absolute
+      top -1 * $gutter
+      display block
+      width 100%
+      height $gutter
+      background-color transparent
+      z-index -1
+
+    &.is-show
+      display block
+
+[x-out-of-boundaries] 
+  pointer-events none
+  visibility hidden
+  opacity 0
+
+for prop in (top bottom) (right left) (bottom top) (left right)
+  [x-placement^=\"{prop[0]}\"]
+    margin-{prop[1]} $gutter
+    if direction == top
+      box-shadow 0 -1px 4px $color-shadow
+
+@keyframes layui-rightbit 
+  0% 
+    transform translate3d(30px,0,0)
+    opacity .1
+
+@keyframes layui-leftbit 
+  100% 
+    transform translate3d(30px,0,0)
+    opacity .1
+
+@keyframes layui-downbit 
+  100% 
+    transform translate3d(0,30px,0)
+    opacity .3
+
+.layui-anim-rightbit 
+  animation-name layui-rightbit
+
+.layui-anim-leftbit 
+  animation-name layui-leftbit
+
+.layui-anim-downbit 
+  animation-name layui-downbit

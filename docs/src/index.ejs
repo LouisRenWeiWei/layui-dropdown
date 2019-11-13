@@ -1,0 +1,46 @@
+<%_ updateTime = new Date() _%>
+<% include ./partials/header %>
+
+<div class="layui-fluid">
+  <h1>layui.dropdown.js</h1>
+
+  <h2 class="info">
+    <span>更新日期：<%= updateTime.getFullYear() + '-' + (updateTime.getMonth() + 1) + '-' + updateTime.getDate() %></span>
+    <span><a href="" target="_blank">问题收集</a></span>
+    <span><a href="https://fly.layui.com/u/7767144/" target="_blank">匿名</a></span>
+  </h2>
+
+  <div class="layui-card">
+    <div class="layui-card-header title">前言</div>
+    <ul class="layui-card-body">
+      <li>因为需要自定义组件的下拉内容，类似 <code>form.select</code> 组件的下拉列表</li>
+      <li>保留 <code>layui</code> 原有的特色，又加入一些新的功能</li>
+      <li>使用了 <code><a href="https://popper.js.org/" target="_blank">popper.js</a></code> 可以自适应任何屏幕边界问题</li>
+    </ul>
+  </div>
+
+  <div class="layui-card">
+    <div class="layui-card-header title">简单使用</div>
+    <div class="layui-card-body" style="padding: 0">
+      <iframe src="simple.html"></iframe>
+    </div>
+  </div>
+
+  <div class="layui-card">
+    <div class="layui-card-header title">多方向</div>
+    <div class="layui-card-body" style="padding: 0">
+      <iframe src="multi-direction.html"></iframe>
+    </div>
+  </div>
+
+  <div class="layui-card">
+    <div class="layui-card-header title">多场景应用</div>
+    <div class="layui-card-body" style="padding: 0">
+      <iframe src="scene.html" style="min-height: 200vh;"></iframe>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://www.layuicdn.com/layui/layui.js"></script>
+<% include ./partials/footer %>

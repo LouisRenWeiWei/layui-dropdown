@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="renderer" content="webkit">
+  <title>简单应用 | layui.dropdown.js</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+  <link rel="stylesheet" href="https://www.layuicdn.com/layui/css/layui.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="dropdown.css">
+  
+
+<style>
+  body {
+    padding: 40px;
+  }
+
+  .layui-btn {
+    text-transform: uppercase;
+  }
+
+  .layui-code {
+    margin: 30px 20px 20px;
+  }
+
+  .layui-tooltip .layui-dropdown-menu {
+  border-color: #000;
+  border-radius: 4px;
+  background-color: #000;
+  color: #fff;
+  text-align: center;
+  padding: 6px 10px;
+  min-height: 38px;
+  line-height: 24px;
+}
+
+.layui-tooltip .layui-dropdown-menu [x-arrow] {
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  border: 5px solid transparent;
+}
+
+.layui-tooltip .layui-dropdown-menu[x-placement^="top"] [x-arrow] {
+  top: 34px;
+  border-top-color: #000;
+}
+
+.layui-tooltip .layui-dropdown-menu[x-placement^="right"] [x-arrow] {
+  left: -15px;
+  border-right-color: #000;
+}
+
+.layui-tooltip .layui-dropdown-menu[x-placement^="bottom"] [x-arrow] {
+  top: -15px;
+  border-bottom-color: #000;
+}
+
+.layui-tooltip .layui-dropdown-menu[x-placement^="left"] [x-arrow] {
+  left: calc(100% - 2px);
+  border-left-color: #000;
+}
+</style>
+
+
+</head>
+<body>
+  
+
+<main>
+<!-- 一个容器 -->
+<div class="layui-dropdown" id="example1">
+  <!-- 触发器 -->
+  <button class="layui-btn layui-dropdown-toggle">
+    default
+    <i class="layui-icon layui-icon-triangle-d"></i>
+  </button>
+  <!-- 下拉框 -->
+  <div class="layui-dropdown-menu">
+    <div style="width: 240px; height: 120px; background: pink;">
+      任意内容
+    </div>
+  </div>
+</div>
+
+<pre id="html" class="layui-code" lay-encode="true" lay-skin="notepad">
+<!-- 一个容器 -->
+<div class="layui-dropdown" id="example1">
+  <!-- 触发器 -->
+  <button class="layui-btn layui-dropdown-toggle">
+    default
+    <i class="layui-icon layui-icon-triangle-d"></i>
+  </button>
+  <!-- 下拉框 -->
+  <div class="layui-dropdown-menu">
+    <div style="width: 240px; height: 120px; background: pink;">
+      任意内容
+    </div>
+  </div>
+</div>
+    
+</pre>
+<pre id="js" class="layui-code" lay-encode="true" lay-skin="notepad">
+layui.use(['dropdown'], function (dropdown) {
+  dropdown.render() // 当前页面如果只存在一个，可以不用传入参数
+})   
+</pre>
+</main>
+
+<script src="https://www.layuicdn.com/layui/layui.js"></script>
+<script>
+  layui.config({
+    base: './'
+  }).extend({
+    dropdown: 'dropdown'
+  }).use(['jquery', 'dropdown', 'code'], function ($, dropdown, code) {
+    dropdown.render()
+    code({elem: '#html', title: 'Html', about: false})
+    code({elem: '#js', title: 'JavaScript', about: false})
+  })
+</script>
+</body>
+</html>

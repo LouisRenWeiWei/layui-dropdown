@@ -1,0 +1,71 @@
+<% if (currentPage === '404') { %>
+
+<style>
+  body {
+    padding: 2.5em;
+  }
+
+  p {
+    color: #666;
+    font-size: .75em;
+    font-family: Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    text-transform: uppercase;
+  }
+</style>
+
+<% } else if (currentPage === 'index') { %>
+
+<style>
+  body {
+    margin: 0;
+    background-color: #f2f2f2;
+  }
+
+  ul.layui-card-body li {
+    padding-left: 1em;
+    position: relative;
+  }
+
+  ul.layui-card-body li:before {
+    content: "";
+    position: absolute;
+    top: calc(50% - 1px);
+    left: 4px;
+    display: block;
+    width: 2px;
+    height: 2px;
+    background: #000;
+    pointer-events: none;
+  }
+
+  .info {
+    text-align: center;
+    color: #999;
+    font-size: 13px;
+  }
+
+  .info span {
+    padding-right: 5px;
+    padding-left: 5px;
+  }
+</style>
+
+<% } else { %>
+
+<style>
+  body {
+    padding: 40px;
+  }
+
+  .layui-btn {
+    text-transform: uppercase;
+  }
+
+  .layui-code {
+    margin: 30px 20px 20px;
+  }
+
+  <% include ../code/scene-tooltip-style %>
+</style>
+
+<% } %>

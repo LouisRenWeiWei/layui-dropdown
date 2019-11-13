@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="renderer" content="webkit">
+  <title>多方向 | layui.dropdown.js</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+  <link rel="stylesheet" href="https://www.layuicdn.com/layui/css/layui.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="dropdown.css">
+  
+
+<style>
+  body {
+    padding: 40px;
+  }
+
+  .layui-btn {
+    text-transform: uppercase;
+  }
+
+  .layui-code {
+    margin: 30px 20px 20px;
+  }
+
+  .layui-tooltip .layui-dropdown-menu {
+  border-color: #000;
+  border-radius: 4px;
+  background-color: #000;
+  color: #fff;
+  text-align: center;
+  padding: 6px 10px;
+  min-height: 38px;
+  line-height: 24px;
+}
+
+.layui-tooltip .layui-dropdown-menu [x-arrow] {
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  border: 5px solid transparent;
+}
+
+.layui-tooltip .layui-dropdown-menu[x-placement^="top"] [x-arrow] {
+  top: 34px;
+  border-top-color: #000;
+}
+
+.layui-tooltip .layui-dropdown-menu[x-placement^="right"] [x-arrow] {
+  left: -15px;
+  border-right-color: #000;
+}
+
+.layui-tooltip .layui-dropdown-menu[x-placement^="bottom"] [x-arrow] {
+  top: -15px;
+  border-bottom-color: #000;
+}
+
+.layui-tooltip .layui-dropdown-menu[x-placement^="left"] [x-arrow] {
+  left: calc(100% - 2px);
+  border-left-color: #000;
+}
+</style>
+
+
+</head>
+<body>
+  
+
+<main style="margin-top: 100px">
+
+
+<!-- up -->
+<div class="layui-dropdown is-up" id="example1">
+  <button class="layui-btn layui-dropdown-toggle">
+    up
+    <i class="layui-icon layui-icon-up"></i>
+  </button>
+  <div class="layui-dropdown-menu">
+    <div style="width: 240px; height: 120px; background-image: linear-gradient(to top, transparent, orange);">
+      任意内容 up
+    </div>
+  </div>
+</div>
+
+<!-- right -->
+<div class="layui-dropdown is-right" id="example2">
+  <button class="layui-btn layui-dropdown-toggle">
+    right
+    <i class="layui-icon layui-icon-right"></i>
+  </button>
+  <div class="layui-dropdown-menu">
+    <div style="width: 240px; height: 120px; background-image: linear-gradient(to right, transparent, orange);">
+      任意内容 right
+    </div>
+  </div>
+</div>
+
+<!-- down -->
+<div class="layui-dropdown is-down" id="example3">
+  <button class="layui-btn layui-dropdown-toggle">
+    down
+    <i class="layui-icon layui-icon-down"></i>
+  </button>
+  <div class="layui-dropdown-menu">
+    <div style="width: 240px; height: 120px; background-image: linear-gradient(to bottom, transparent, orange);">
+      任意内容 down
+    </div>
+  </div>
+</div>
+
+<!-- left -->
+<div class="layui-dropdown is-left" id="example4">
+  <button class="layui-btn layui-dropdown-toggle">
+    left
+    <i class="layui-icon layui-icon-left"></i>
+  </button>
+  <div class="layui-dropdown-menu">
+    <div style="width: 240px; height: 120px; background-image: linear-gradient(to left, transparent, orange);">
+      任意内容 left
+    </div>
+  </div>
+</div>
+
+<pre id="html" class="layui-code" lay-encode="true" lay-skin="notepad">
+
+
+<!-- up -->
+<div class="layui-dropdown is-up" id="example1">
+  <button class="layui-btn layui-dropdown-toggle">
+    up
+    <i class="layui-icon layui-icon-up"></i>
+  </button>
+  <div class="layui-dropdown-menu">
+    <div style="width: 240px; height: 120px; background-image: linear-gradient(to top, transparent, orange);">
+      任意内容 up
+    </div>
+  </div>
+</div>
+
+<!-- right -->
+<div class="layui-dropdown is-right" id="example2">
+  <button class="layui-btn layui-dropdown-toggle">
+    right
+    <i class="layui-icon layui-icon-right"></i>
+  </button>
+  <div class="layui-dropdown-menu">
+    <div style="width: 240px; height: 120px; background-image: linear-gradient(to right, transparent, orange);">
+      任意内容 right
+    </div>
+  </div>
+</div>
+
+<!-- down -->
+<div class="layui-dropdown is-down" id="example3">
+  <button class="layui-btn layui-dropdown-toggle">
+    down
+    <i class="layui-icon layui-icon-down"></i>
+  </button>
+  <div class="layui-dropdown-menu">
+    <div style="width: 240px; height: 120px; background-image: linear-gradient(to bottom, transparent, orange);">
+      任意内容 down
+    </div>
+  </div>
+</div>
+
+<!-- left -->
+<div class="layui-dropdown is-left" id="example4">
+  <button class="layui-btn layui-dropdown-toggle">
+    left
+    <i class="layui-icon layui-icon-left"></i>
+  </button>
+  <div class="layui-dropdown-menu">
+    <div style="width: 240px; height: 120px; background-image: linear-gradient(to left, transparent, orange);">
+      任意内容 left
+    </div>
+  </div>
+</div>
+      
+</pre>
+<pre id="js" class="layui-code" lay-encode="true" lay-skin="notepad">
+layui.use(['dropdown'], function (dropdown) {
+  var i = 1; len = 4;
+  while(i <= len) {
+    dropdown.render('#example' + i); // 注意页面上的`data-placement`
+    i++;
+  }
+})
+</pre>
+</main>
+
+<script src="https://www.layuicdn.com/layui/layui.js"></script>
+<script>
+  layui.config({
+    base: './'
+  }).extend({
+    dropdown: 'dropdown'
+  }).use(['jquery', 'dropdown', 'code'], function ($, dropdown, code) {
+    code({elem: '#html', title: 'Html', about: false});
+    code({elem: '#js', title: 'JavaScript', about: false});
+
+    var i = 1; len = 4;
+    while(i <= len) {
+      dropdown.render({
+        dropdown: '#example' + i,
+        trigger: 'hover'
+      });
+      i++;
+    }
+  })
+</script>
+</body>
+</html>

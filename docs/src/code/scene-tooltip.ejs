@@ -1,0 +1,13 @@
+<%_ list=['up', 'right', 'down', 'left'] _%>
+
+<% list.forEach(item => { %>
+<div class="layui-dropdown layui-tooltip is-<%= item %>" id="scene-tooltip-<%= item %>">
+  <button class="layui-btn layui-dropdown-toggle" style="text-transform: uppercase;">
+    <%= item %>
+  </button>
+  <div class="layui-dropdown-menu">
+    <div class="layui-dropdown-menu-arrow" x-arrow></div>
+    <span><%= item %></span>
+  </div>
+</div>
+<% }) %>
