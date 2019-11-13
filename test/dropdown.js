@@ -4013,7 +4013,7 @@
       trigger: 'hover',
       animate: true,
       showTimeout: 150,
-      hideTimeout: 100,
+      hideTimeout: 16.777,
       className: {
         showAnimation: ClassName.ANIMATION,
         hideAnimation: '',
@@ -4023,6 +4023,23 @@
       }
     };
     var seed = 1000;
+
+    function animateCss($target, animateName, callback) {
+      if (!$target[0]) return;
+      $target.addClass(animateName);
+
+      function animationEndHandler() {
+        $target.removeClass(animateName);
+        $target.off(whichAnimationEvent, animationEndHandler);
+        $.isFunction(callback) && callback();
+      }
+
+      $target.off(whichAnimationEvent).on(whichAnimationEvent, animationEndHandler);
+
+      if (!animateName) {
+        animationEndHandler();
+      }
+    }
 
     var Dropdown =
     /*#__PURE__*/
@@ -4115,6 +4132,9 @@
               showToggle = _this$_config$classNa.showToggle,
               showMenu = _this$_config$classNa.showMenu;
           console.log('in show');
+
+          this._$menu.off(whichAnimationEvent).removeClass(hideAnimation);
+
           if (this._$toggle[0].disabled || this._$toggle.hasClass(ClassName.DISABLED)) return;
 
           this._$dropdown.addClass(showDropdown);
@@ -4129,28 +4149,9 @@
           this._visible = true;
 
           if (this._config.animate) {
-            var animating = true;
-
-            var ev = function ev(e) {
-              console.log('showAnimationEvent: ', whichAnimationEvent);
-
-              if (e.target === e.currentTarget && !animating) {
-                _this.emit(_this.ON_SHOWED);
-
-                animating = false;
-
-                _this._$menu.off(whichAnimationEvent, ev);
-              }
-            };
-
-            this._$menu.on(whichAnimationEvent, ev); // transitionEnd(this._$menu).bind(() => {
-            //   console.log('hideTransitionEnd: ', transitionEnd(this._$menu).whichTransitionEnd);
-            //   this.emit(this.ON_SHOWED);
-            //   transitionEnd(this._$menu).unbind();
-            // });
-
-
-            this._$menu.removeClass(hideAnimation).addClass(showAnimation);
+            animateCss(this._$menu, showAnimation, function () {
+              _this.emit(_this.ON_SHOWED);
+            });
           }
 
           this.emit(this.ON_SHOW);
@@ -4168,6 +4169,8 @@
               showMenu = _this$_config$classNa2.showMenu;
           console.log('in hide');
 
+          this._$menu.off(whichAnimationEvent).removeClass(showAnimation);
+
           var handler = function handler() {
             _this2._$dropdown.removeClass(showDropdown);
 
@@ -4182,24 +4185,11 @@
           if (this._$toggle[0].disabled || this._$toggle.hasClass(ClassName.DISABLED)) return;
 
           if (this._config.animate) {
-            var animating = true;
+            animateCss(this._$menu, hideAnimation, function () {
+              handler();
 
-            var ev = function ev(e) {
-              console.log('hideAnimationEvent: ', whichAnimationEvent);
-
-              if (e.target === e.currentTarget && !animating) {
-                handler();
-                animating = false;
-
-                _this2.emit(_this2.ON_HIDED);
-
-                _this2._$menu.off(whichAnimationEvent, ev);
-              }
-            };
-
-            this._$menu.on(whichAnimationEvent, ev);
-
-            this._$menu.removeClass(showAnimation).addClass(hideAnimation);
+              _this2.emit(_this2.ON_HIDED);
+            });
           } else {
             handler();
           }
@@ -4222,13 +4212,12 @@
           } else if (this._config.trigger === 'click') {
             this._$toggle.on('click', function (event) {
               event.preventDefault(); // 阻止本身事件
+              // event.stopPropagation();
 
               _this3._visible ? _this3.hide() : _this3.show();
             });
 
             clickOutside(this._$toggle[0], function (e) {
-              console.log('clickout: ', e.target);
-              console.log('include: ', _this3._$menu.is(e.target) || _this3._$menu.has(e.target).length);
               if (_this3._$menu.is(e.target) || _this3._$menu.has(e.target).length) return;
 
               _this3.hide();

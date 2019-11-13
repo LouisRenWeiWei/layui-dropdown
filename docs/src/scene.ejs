@@ -15,9 +15,11 @@ layui.use(['jquery', 'dropdown'], function ($, dropdown) {
     toggle: '.layui-select-title', // 确保唯一化
     menu: '[data-role="menu"]', // 确保唯一化
     trigger: 'click', // 因为是模仿 layui.select 所以我们不在使用 hover
-    dropdownShow: 'layui-form-selected', // 配置菜单展开的样式类名
-    menuShow: '', // 移除菜单栏的样式类名，这样和 layui.select 展现方式一致
-    hideAnimation: 'layui-anim layui-anim-downbit' // 为了区别原生渲染，加入一些动画，但是这里有一个小问题就是三角动画延迟了
+    className: {
+      hideAnimation: 'layui-anim layui-anim-downbit', // 为了区别原生渲染，加入一些动画，但是这里有一个小问题就是三角动画延迟了
+      showDropdown: 'layui-form-selected', // 配置菜单展开的样式类名
+      showMenu: '' // 移除菜单栏的样式类名，这样和 layui.select 展现方式一致
+    }
   });
 
   // 这块代码是为了实现 select 的动作效果，不能光有样儿，没有功能
@@ -47,8 +49,10 @@ layui.use(['jquery', 'dropdown', 'tree'], function ($, dropdown, tree) {
     toggle: '.layui-select-title',
     menu: '[data-role="menu"]',
     trigger: 'click',
-    dropdownShow: 'layui-form-selected',
-    menuShow: ''
+    className: {
+      dropdownShow: 'layui-form-selected',
+      menuShow: ''
+    }
   });
   instance2.on(instance2.EMIT_VISIBLE, function(params) {
     var visible = params.visible; // 每一次的开关都会触发事件
@@ -83,8 +87,10 @@ layui.use(['jquery', 'dropdown'], function ($, dropdown) {
   $.each(['up', 'right', 'down', 'left'], function(i, item) {
     dropdown.render({
       dropdown: '#scene-tooltip-'.concat(item),
-      showAnimation: 'layui-anim layui-anim-fadein',
-      hideAnimation: 'layui-anim layui-anim-fadeout'
+      className: {
+        showAnimation: 'layui-anim layui-anim-fadein',
+        hideAnimation: 'layui-anim layui-anim-fadeout'
+      }
     })
   })
 })  
@@ -176,9 +182,11 @@ layui.use(['jquery', 'dropdown'], function ($, dropdown) {
       toggle: '.layui-select-title',
       menu: '[data-role="menu"]',
       trigger: 'click',
-      dropdownShow: 'layui-form-selected',
-      menuShow: '',
-      hideAnimation: 'layui-anim layui-anim-downbit'
+      className: {
+        hideAnimation: 'layui-anim layui-anim-downbit',
+        showDropdown: 'layui-form-selected',
+        showMenu: ''
+      }
     });
 
     var $input = $('#scene-select .layui-input');
@@ -199,10 +207,12 @@ layui.use(['jquery', 'dropdown'], function ($, dropdown) {
       toggle: '.layui-select-title',
       menu: '[data-role="menu"]',
       trigger: 'click',
-      dropdownShow: 'layui-form-selected',
-      menuShow: ''
+      className: {
+        dropdownShow: 'layui-form-selected',
+        menuShow: ''
+      }
     });
-    instance2.on(instance2.EMIT_VISIBLE, function() {
+    instance2.on(instance2.ON_SHOW, function() {
       tree.reload('demo1');
     });
 
@@ -227,8 +237,11 @@ layui.use(['jquery', 'dropdown'], function ($, dropdown) {
     $.each(['up', 'right', 'down', 'left'], function(i, item) {
       dropdown.render({
         dropdown: '#scene-tooltip-'.concat(item),
-        showAnimation: 'layui-anim layui-anim-fadein',
-        hideAnimation: 'layui-anim layui-anim-fadeout',
+        // trigger: 'click',
+        className: {
+          showAnimation: 'layui-anim layui-anim-fadein',
+          hideAnimation: 'layui-anim layui-anim-fadeout'
+        }
       });
     });
   })

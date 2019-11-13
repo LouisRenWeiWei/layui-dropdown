@@ -27,26 +27,34 @@ $gutter = 5px
     &:before
       content "\20"
       position absolute
-      top -1 * $gutter
       display block
-      width 100%
-      height $gutter
       background-color transparent
       z-index -1
 
     &.is-show
       display block
+    
+    for prop in (top bottom) (right left) (bottom top) (left right)
+      &[x-placement^=\"{prop[0]}\"]
+        margin-{prop[1]} $gutter
+        if prop[0] == top
+          box-shadow 0 -1px 4px $color-shadow
+        
+        &:before
+          {prop[1]} -1 * $gutter
+          if prop[0] == top || prop[0] == bottom
+            width 100%
+            height $gutter
+            left 0
+          else
+            width $gutter
+            height 100%
+            top 0
 
 [x-out-of-boundaries] 
   pointer-events none
   visibility hidden
   opacity 0
-
-for prop in (top bottom) (right left) (bottom top) (left right)
-  [x-placement^=\"{prop[0]}\"]
-    margin-{prop[1]} $gutter
-    if direction == top
-      box-shadow 0 -1px 4px $color-shadow
 
 @keyframes layui-rightbit 
   0% 

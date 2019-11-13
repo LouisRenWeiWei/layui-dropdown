@@ -42,7 +42,7 @@ layui.define(['jquery'], function(exports) {
     trigger    : 'hover',
     animate    : true,
     showTimeout: 150,
-    hideTimeout: 100,
+    hideTimeout: 16.777,
     className  : {
       showAnimation: ClassName.ANIMATION,
       hideAnimation: '',
@@ -53,6 +53,24 @@ layui.define(['jquery'], function(exports) {
   };
 
   let seed = 1000;
+
+  function animateCss($target, animateName, callback) {
+    if (!$target[0]) return;
+    $target.addClass(animateName);
+
+    function animationEndHandler() {
+      $target.removeClass(animateName);
+      $target.off(whichAnimationEvent, animationEndHandler);
+
+      $.isFunction(callback) && callback();
+    }
+
+    $target.off(whichAnimationEvent).on(whichAnimationEvent, animationEndHandler);
+
+    if (!animateName) {
+      animationEndHandler();
+    }
+  }
 
   class Dropdown {
     constructor(options) {
@@ -139,6 +157,8 @@ layui.define(['jquery'], function(exports) {
 
       console.log('in show');
 
+      this._$menu.off(whichAnimationEvent).removeClass(hideAnimation);
+
       if (this._$toggle[0].disabled || this._$toggle.hasClass(ClassName.DISABLED)) return;
 
       this._$dropdown.addClass(showDropdown);
@@ -149,24 +169,9 @@ layui.define(['jquery'], function(exports) {
       this._visible = true;
 
       if (this._config.animate) {
-        let animating = true;
-        const ev = e => {
-          console.log('showAnimationEvent: ', whichAnimationEvent);
-          if (e.target === e.currentTarget && !animating) {
-            this.emit(this.ON_SHOWED);
-            animating = false;
-            this._$menu.off(whichAnimationEvent, ev);
-          }
-        };
-        this._$menu.on(whichAnimationEvent, ev);
-
-        // transitionEnd(this._$menu).bind(() => {
-        //   console.log('hideTransitionEnd: ', transitionEnd(this._$menu).whichTransitionEnd);
-        //   this.emit(this.ON_SHOWED);
-        //   transitionEnd(this._$menu).unbind();
-        // });
-
-        this._$menu.removeClass(hideAnimation).addClass(showAnimation);
+        animateCss(this._$menu, showAnimation, () => {
+          this.emit(this.ON_SHOWED);
+        });
       }
 
       this.emit(this.ON_SHOW);
@@ -183,6 +188,8 @@ layui.define(['jquery'], function(exports) {
 
       console.log('in hide');
 
+      this._$menu.off(whichAnimationEvent).removeClass(showAnimation);
+
       const handler = () => {
         this._$dropdown.removeClass(showDropdown);
         this._$toggle.removeClass(showToggle);
@@ -194,18 +201,10 @@ layui.define(['jquery'], function(exports) {
       if (this._$toggle[0].disabled || this._$toggle.hasClass(ClassName.DISABLED)) return;
 
       if (this._config.animate) {
-        let animating = true;
-        const ev = e => {
-          console.log('hideAnimationEvent: ', whichAnimationEvent);
-          if (e.target === e.currentTarget && !animating) {
-            handler();
-            animating = false;
-            this.emit(this.ON_HIDED);
-            this._$menu.off(whichAnimationEvent, ev);
-          }
-        };
-        this._$menu.on(whichAnimationEvent, ev);
-        this._$menu.removeClass(showAnimation).addClass(hideAnimation);
+        animateCss(this._$menu, hideAnimation, () => {
+          handler();
+          this.emit(this.ON_HIDED);
+        });
       } else {
         handler();
       }
@@ -222,11 +221,10 @@ layui.define(['jquery'], function(exports) {
       } else if (this._config.trigger === 'click') {
         this._$toggle.on('click', event => {
           event.preventDefault(); // 阻止本身事件
+          // event.stopPropagation();
           this._visible ? this.hide() : this.show();
         });
         clickOutside(this._$toggle[0], e => {
-          console.log('clickout: ', e.target);
-          console.log('include: ', this._$menu.is(e.target) || this._$menu.has(e.target).length);
           if (this._$menu.is(e.target) || this._$menu.has(e.target).length) return;
           this.hide();
         });
