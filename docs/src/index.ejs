@@ -16,7 +16,161 @@
       <li>因为需要自定义组件的下拉内容，类似 <code>form.select</code> 组件的下拉列表</li>
       <li>保留 <code>layui</code> 原有的特色，又加入一些新的功能</li>
       <li>使用了 <code><a href="https://popper.js.org/" target="_blank">popper.js</a></code> 可以自适应任何屏幕边界问题</li>
+      <li>兼容IE9+（包括IE9）</li>
     </ul>
+  </div>
+
+  <div class="layui-card">
+    <div class="layui-card-header title">参数</div>
+    <div class="layui-card-body">
+      <table class="layui-table">
+        <colgroup>
+          <col width="100">
+          <col width="60">
+          <col>
+          <col width="220">
+        </colgroup>
+        <thead>
+          <tr>
+            <th>名称</th>
+            <th>类型</th>
+            <th>说明</th>
+            <th>默认值</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>layFilter</td>
+            <td>String</td>
+            <td><code><a href="https://www.layui.com" target="_blank">layui</a></code> 的 <code>filter</code> 属性，作为归类标识</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>dropdown</td>
+            <td>HTMLElement|JQueryObject|String</td>
+            <td>容器选择器，多个默认选择第一个</td>
+            <td><code>.layui-dropdown</code></td>
+          </tr>
+          <tr>
+            <td>toggle</td>
+            <td>HTMLElement|JQueryObject|String</td>
+            <td>触发选择器，多个默认选择第一个</td>
+            <td><code>.layui-dropdown-toggle</code></td>
+          </tr>
+          <tr>
+            <td>menu</td>
+            <td>HTMLElement|JQueryObject|String</td>
+            <td>下拉框选择器，多个默认选择第一个</td>
+            <td><code>.layui-dropdown-menu</code></td>
+          </tr>
+          <tr>
+            <td>trigger</td>
+            <td>String</td>
+            <td>触发事件类型，可选值 [<code>hover</code>, <code>click</code>]</td>
+            <td><code>hover</code></td>
+          </tr>
+          <tr>
+            <td>animate</td>
+            <td>Boolean</td>
+            <td>是否开启动画</td>
+            <td><code>true</code></td>
+          </tr>
+          <tr>
+            <td>showTimeout</td>
+            <td>Number</td>
+            <td>下拉框展示延迟时间（仅当 <code>{ <strong>trigger:</strong> hover }</code> 有效）</td>
+            <td>150</td>
+          </tr>
+          <tr>
+            <td>hideTimeout</td>
+            <td>Number</td>
+            <td>下拉框隐藏延迟时间（仅当 <code>{ <strong>trigger:</strong> hover }</code> 有效）</td>
+            <td>100</td>
+          </tr>
+          <tr>
+            <td>className.showAnimation</td>
+            <td>String</td>
+            <td>下拉框展示动画（仅当动画开启有效）</td>
+            <td><code>layui-anim layui-anim-upbit</code></td>
+          </tr>
+          <tr>
+            <td>className.hideAnimation</td>
+            <td>String</td>
+            <td>下拉框隐藏动画（仅当动画开启有效）</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>className.showDropdown</td>
+            <td>String</td>
+            <td>容器显示的类名</td>
+            <td><code>is-show</code></td>
+          </tr>
+          <tr>
+            <td>className.showToggle</td>
+            <td>String</td>
+            <td>触发器展示的类名</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>className.showMenu</td>
+            <td>String</td>
+            <td>下拉框展示的类名</td>
+            <td><code>is-show</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="layui-card">
+    <div class="layui-card-header title">事件</div>
+    <div class="layui-card-body">
+      <table class="layui-table">
+        <colgroup>
+          <col width="100">
+          <col>
+          <col width="100">
+        </colgroup>
+        <thead>
+          <tr>
+            <th>名称</th>
+            <th>说明</th>
+            <th>参数</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>show</td>
+            <td>实例方法，显示下拉框</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>hide</td>
+            <td>实例方法，隐藏下拉框</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>on</td>
+            <td>
+              实例监听方法，可监听 4 个事件: 
+              <code>instance.ON_SHOW</code>（展示）
+              <code>instance.ON_SHOWED</code>（展示完毕）
+              <code>instance.ON_HIDE</code>（隐藏）
+              <code>instance.ON_HIDED</code>（隐藏完毕）
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>emit</td>
+            <td>
+              提交事件，可以用于其他模块监听，如果是针对性可能需要用到 <code>lay-filter</code> 用于选定，
+              获取 <code>layui-filter</code>: <code>instance.LAY_FILTER</code>
+            </td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <div class="layui-card">

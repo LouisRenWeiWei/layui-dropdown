@@ -1,3 +1,4 @@
+import './polyfill';
 import layui from 'layui';
 import Popper from 'popper.js';
 import clickOutside from 'click-outside';
@@ -42,7 +43,7 @@ layui.define(['jquery'], function(exports) {
     trigger    : 'hover',
     animate    : true,
     showTimeout: 150,
-    hideTimeout: 16.777,
+    hideTimeout: 100,
     className  : {
       showAnimation: ClassName.ANIMATION,
       hideAnimation: '',
@@ -65,11 +66,9 @@ layui.define(['jquery'], function(exports) {
       $.isFunction(callback) && callback();
     }
 
-    $target.off(whichAnimationEvent).on(whichAnimationEvent, animationEndHandler);
-
-    if (!animateName) {
-      animationEndHandler();
-    }
+    animateName && whichAnimationEvent // 如果不支持动画特性，则直接触发
+      ? $target.on(whichAnimationEvent, animationEndHandler)
+      : animationEndHandler();
   }
 
   class Dropdown {
@@ -101,10 +100,10 @@ layui.define(['jquery'], function(exports) {
      * @param {HTMLElement|JQueryObject|String} config.dropdown 容器，默认值 `ClassName.dropdown`
      * @param {HTMLElement|JQueryObject|String} config.toggle 触发器，默认值 `ClassName.toggle`
      * @param {HTMLElement|JQueryObject|String} config.menu 下拉框，默认值 `ClassName.menu`
-     * @param {String} config.trigger 事件绑定，默认 `hover`，可选值 [`hover`, `click`]
+     * @param {String} config.trigger 触发事件类型，默认 `hover`，可选值 [`hover`, `click`]
      * @param {Boolean} config.animate 是否开启动画，默认值 `true`
      * @param {Number} config.showTimeout 下拉框展示延迟时间（仅当 `trigger: hover` 有效），默认150
-     * @param {Number} config.showTimeout 下拉框隐藏延迟时间（仅当 `trigger: hover` 有效），默认100
+     * @param {Number} config.hideTimeout 下拉框隐藏延迟时间（仅当 `trigger: hover` 有效），默认100
      * @param {String} config.className.showAnimation 下拉框展示动画（仅当动画开启有效），默认值 `ClassName.ANIMATION`
      * @param {String} config.className.hideAnimation 下拉框隐藏动画（仅当动画开启有效），默认值 ''
      * @param {String} config.className.showDropdown 容器显示的类名，默认 `is-show`
@@ -155,8 +154,6 @@ layui.define(['jquery'], function(exports) {
         showMenu
       } = this._config.className;
 
-      console.log('in show');
-
       this._$menu.off(whichAnimationEvent).removeClass(hideAnimation);
 
       if (this._$toggle[0].disabled || this._$toggle.hasClass(ClassName.DISABLED)) return;
@@ -186,8 +183,6 @@ layui.define(['jquery'], function(exports) {
         showMenu
       } = this._config.className;
 
-      console.log('in hide');
-
       this._$menu.off(whichAnimationEvent).removeClass(showAnimation);
 
       const handler = () => {
@@ -214,14 +209,11 @@ layui.define(['jquery'], function(exports) {
 
     _addEventListeners() {
       if (this._config.trigger === 'hover') {
-        this._$toggle.on('mouseenter', $.proxy(debounce(this.show, this._config.showTimeout), this));
-        this._$toggle.on('mouseleave', $.proxy(debounce(this.hide, this._config.hideTimeout), this));
-        this._$menu.on('mouseenter', $.proxy(debounce(this.show, this._config.showTimeout), this));
-        this._$menu.on('mouseleave', $.proxy(debounce(this.hide, this._config.hideTimeout), this));
+        this._$dropdown.on('mouseenter', $.proxy(debounce(this.show, this._config.showTimeout), this));
+        this._$dropdown.on('mouseleave', $.proxy(debounce(this.hide, this._config.hideTimeout), this));
       } else if (this._config.trigger === 'click') {
         this._$toggle.on('click', event => {
           event.preventDefault(); // 阻止本身事件
-          // event.stopPropagation();
           this._visible ? this.hide() : this.show();
         });
         clickOutside(this._$toggle[0], e => {
@@ -229,31 +221,6 @@ layui.define(['jquery'], function(exports) {
           this.hide();
         });
       }
-
-      // const {
-      //   showDropdown,
-      //   showToggle,
-      //   showMenu
-      // } = this._config.className;
-
-      // if (this._config.animate) {
-      //   this._$menu.on(whichAnimationEvent, e => {
-      //     console.log('whichAnimationEvent', e.target === e.currentTarget);
-      //     if (e.target === e.currentTarget) {
-      //       if (this._visible) {
-      //         this._$dropdown.removeClass(showDropdown);
-      //         this._$toggle.removeClass(showToggle);
-      //         this._$menu.removeClass(showMenu);
-      //       } else {
-      //         this._$dropdown.addClass(showDropdown);
-      //         this._$toggle.addClass(showToggle);
-      //         this._$menu.addClass(showMenu);
-      //       }
-      //       this._popper && this._popper.update();
-      //       this._visible = !this._visible;
-      //     }
-      //   });
-      // }
     }
 
     _createPopper() {

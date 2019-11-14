@@ -25,6 +25,40 @@
     return Constructor;
   }
 
+  // poyfill requestAnimationFrame
+  // reference: https://github.com/darius/requestAnimationFrame
+  if (!Date.now) {
+    Date.now = function () {
+      return new Date().getTime();
+    };
+  }
+
+  (function (window) {
+
+    var vendors = ['webkit', 'moz'];
+
+    for (var i = 0; i < vendors.length && !window.requestAnimationFrame; ++i) {
+      var vp = vendors[i];
+      window.requestAnimationFrame = window[vp + 'RequestAnimationFrame'];
+      window.cancelAnimationFrame = window[vp + 'CancelAnimationFrame'] || window[vp + 'CancelRequestAnimationFrame'];
+    }
+
+    if (/iP(ad|hone|od).*OS 6/.test(window.navigator.userAgent) || // iOS6 is buggy
+    !window.requestAnimationFrame || !window.cancelAnimationFrame) {
+      var lastTime = 0;
+
+      window.requestAnimationFrame = function (callback) {
+        var now = Date.now();
+        var nextTime = Math.max(lastTime + 16, now);
+        return setTimeout(function () {
+          callback(lastTime = nextTime);
+        }, nextTime - now);
+      };
+
+      window.cancelAnimationFrame = clearTimeout;
+    }
+  })(window);
+
   /**!
    * @fileOverview Kickass library to create and place poppers near their reference elements.
    * @version 1.16.0
@@ -4013,7 +4047,7 @@
       trigger: 'hover',
       animate: true,
       showTimeout: 150,
-      hideTimeout: 16.777,
+      hideTimeout: 100,
       className: {
         showAnimation: ClassName.ANIMATION,
         hideAnimation: '',
@@ -4034,11 +4068,8 @@
         $.isFunction(callback) && callback();
       }
 
-      $target.off(whichAnimationEvent).on(whichAnimationEvent, animationEndHandler);
-
-      if (!animateName) {
-        animationEndHandler();
-      }
+      animateName && whichAnimationEvent // 如果不支持动画特性，则直接触发
+      ? $target.on(whichAnimationEvent, animationEndHandler) : animationEndHandler();
     }
 
     var Dropdown =
@@ -4076,10 +4107,10 @@
          * @param {HTMLElement|JQueryObject|String} config.dropdown 容器，默认值 `ClassName.dropdown`
          * @param {HTMLElement|JQueryObject|String} config.toggle 触发器，默认值 `ClassName.toggle`
          * @param {HTMLElement|JQueryObject|String} config.menu 下拉框，默认值 `ClassName.menu`
-         * @param {String} config.trigger 事件绑定，默认 `hover`，可选值 [`hover`, `click`]
+         * @param {String} config.trigger 触发事件类型，默认 `hover`，可选值 [`hover`, `click`]
          * @param {Boolean} config.animate 是否开启动画，默认值 `true`
          * @param {Number} config.showTimeout 下拉框展示延迟时间（仅当 `trigger: hover` 有效），默认150
-         * @param {Number} config.showTimeout 下拉框隐藏延迟时间（仅当 `trigger: hover` 有效），默认100
+         * @param {Number} config.hideTimeout 下拉框隐藏延迟时间（仅当 `trigger: hover` 有效），默认100
          * @param {String} config.className.showAnimation 下拉框展示动画（仅当动画开启有效），默认值 `ClassName.ANIMATION`
          * @param {String} config.className.hideAnimation 下拉框隐藏动画（仅当动画开启有效），默认值 ''
          * @param {String} config.className.showDropdown 容器显示的类名，默认 `is-show`
@@ -4131,7 +4162,6 @@
               showDropdown = _this$_config$classNa.showDropdown,
               showToggle = _this$_config$classNa.showToggle,
               showMenu = _this$_config$classNa.showMenu;
-          console.log('in show');
 
           this._$menu.off(whichAnimationEvent).removeClass(hideAnimation);
 
@@ -4167,7 +4197,6 @@
               showDropdown = _this$_config$classNa2.showDropdown,
               showToggle = _this$_config$classNa2.showToggle,
               showMenu = _this$_config$classNa2.showMenu;
-          console.log('in hide');
 
           this._$menu.off(whichAnimationEvent).removeClass(showAnimation);
 
@@ -4202,17 +4231,12 @@
           var _this3 = this;
 
           if (this._config.trigger === 'hover') {
-            this._$toggle.on('mouseenter', $.proxy(debounce_1(this.show, this._config.showTimeout), this));
+            this._$dropdown.on('mouseenter', $.proxy(debounce_1(this.show, this._config.showTimeout), this));
 
-            this._$toggle.on('mouseleave', $.proxy(debounce_1(this.hide, this._config.hideTimeout), this));
-
-            this._$menu.on('mouseenter', $.proxy(debounce_1(this.show, this._config.showTimeout), this));
-
-            this._$menu.on('mouseleave', $.proxy(debounce_1(this.hide, this._config.hideTimeout), this));
+            this._$dropdown.on('mouseleave', $.proxy(debounce_1(this.hide, this._config.hideTimeout), this));
           } else if (this._config.trigger === 'click') {
             this._$toggle.on('click', function (event) {
               event.preventDefault(); // 阻止本身事件
-              // event.stopPropagation();
 
               _this3._visible ? _this3.hide() : _this3.show();
             });
@@ -4222,30 +4246,7 @@
 
               _this3.hide();
             });
-          } // const {
-          //   showDropdown,
-          //   showToggle,
-          //   showMenu
-          // } = this._config.className;
-          // if (this._config.animate) {
-          //   this._$menu.on(whichAnimationEvent, e => {
-          //     console.log('whichAnimationEvent', e.target === e.currentTarget);
-          //     if (e.target === e.currentTarget) {
-          //       if (this._visible) {
-          //         this._$dropdown.removeClass(showDropdown);
-          //         this._$toggle.removeClass(showToggle);
-          //         this._$menu.removeClass(showMenu);
-          //       } else {
-          //         this._$dropdown.addClass(showDropdown);
-          //         this._$toggle.addClass(showToggle);
-          //         this._$menu.addClass(showMenu);
-          //       }
-          //       this._popper && this._popper.update();
-          //       this._visible = !this._visible;
-          //     }
-          //   });
-          // }
-
+          }
         }
       }, {
         key: "_createPopper",

@@ -30,8 +30,7 @@
   "dependencies": {
     "click-outside": "^2.0.2",
     "debounce": "^1.2.0",
-    "popper.js": "^1.16.0",
-    "transitionEnd": "^1.0.2"
+    "popper.js": "^1.16.0"
   },
   "browserslist": [
     "> 1%",

@@ -5,6 +5,10 @@ h1 {
   text-transform: uppercase;
 }
 
+th {
+  font-weight: 700;
+}
+
 iframe {
   display: block;
   width: 100%;
