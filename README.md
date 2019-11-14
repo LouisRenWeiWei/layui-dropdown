@@ -11,3 +11,19 @@
 ## download
 
 直接打开 `/test/index.html`
+
+## npm
+
+> 先安装 node
+
+``` bash
+npm i # 安装依赖
+
+npm run dev # 编译开发文件
+
+npm run build # 编译生产文件
+
+npm run watch # 开发模式下编译
+```
+
+see: [localhost:3000](localhost:3000)

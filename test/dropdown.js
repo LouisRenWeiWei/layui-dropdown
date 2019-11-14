@@ -2672,7 +2672,6 @@
   Popper.Utils = (typeof window !== 'undefined' ? window : global).PopperUtils;
   Popper.placements = placements;
   Popper.Defaults = Defaults;
-  //# sourceMappingURL=popper.js.map
 
   function unwrapExports (x) {
   	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
@@ -3904,7 +3903,7 @@
   }
   module.exports = exports['default'];
 
-  //# sourceMappingURL=index.js.map
+
   });
 
   var clickOutside = unwrapExports(build);
