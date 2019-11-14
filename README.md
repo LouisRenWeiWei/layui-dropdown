@@ -4,4 +4,10 @@
 
 ## Demo
 
-无需运行，直接点击 `test` 文件夹下的 index.html 即可
+[`click me`](http://blog.hezulong.com/layui-dropdown/test)
+
+[`国内`](https://hezulong1.gitee.io/layui-dropdown)
+
+## download
+
+直接打开 `/test/index.html`
