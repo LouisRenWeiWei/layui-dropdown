@@ -169,14 +169,14 @@ layui.use(['jquery', 'dropdown', 'tree'], function ($, dropdown, tree) {
       menuShow: ''
     }
   });
-  instance2.on(instance2.EMIT_VISIBLE, function(params) {
+  instance2.on(instance2.ON_SHOW, function(params) {
     var visible = params.visible; // 每一次的开关都会触发事件
     tree.reload('demo1'); // 这里我重新加载了树
   });
   // 此处渲染树
   tree.render({
     elem: '#scene-treeselect-tree',
-    data: data2,
+    data: data2, // 数据格式为 layui.tree 所要求的数据，layui 版本 2.5.0+
     click: function(obj) {
       var data = obj.data;
       var value = data.id;
