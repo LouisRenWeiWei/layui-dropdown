@@ -1,62 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <meta name="renderer" content="webkit">
-  <title>主页 | layui.dropdown.js</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
-  <link rel="stylesheet" href="layui/css/layui.css">
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="dropdown.css">
-  
-
-<style>
-  body {
-    margin: 0;
-    background-color: #f2f2f2;
-  }
-
-  ul.layui-card-body li {
-    padding-left: 1em;
-    position: relative;
-  }
-
-  ul.layui-card-body li:before {
-    content: "";
-    position: absolute;
-    top: calc(50% - 1px);
-    left: 4px;
-    display: block;
-    width: 2px;
-    height: 2px;
-    background: #000;
-    pointer-events: none;
-  }
-
-  .info {
-    text-align: center;
-    color: #999;
-    font-size: 13px;
-  }
-
-  .info span {
-    padding-right: 5px;
-    padding-left: 5px;
-  }
-</style>
-
-
-</head>
-<body>
-  
+<%_ updateTime = new Date() _%>
+<% include ./partials/header %>
 
 <div class="layui-fluid">
   <h1>layui.dropdown.js</h1>
 
   <h2 class="info">
-    <span>更新日期：2019-11-21</span>
+    <span>更新日期：<%= updateTime.getFullYear() + '-' + (updateTime.getMonth() + 1) + '-' + updateTime.getDate() %></span>
     <!-- <span>作者：<a href="https://fly.layui.com/u/7767144/" target="_blank">匿名</a></span> -->
   </h2>
 
@@ -254,5 +203,4 @@
 </div>
 
 <script src="layui/layui.js"></script>
-</body>
-</html>
+<% include ./partials/footer %>

@@ -1,0 +1,249 @@
+<% include ./partials/header %>
+
+<main>
+<fieldset class="layui-elem-field layui-field-title">
+  <legend>模拟 <code>layui.select</code></legend>
+</fieldset>
+<% include ./code/scene-select %>
+<pre id="html" class="layui-code" lay-encode="true" lay-skin="notepad">
+<% include ./code/scene-select %>      
+</pre>
+<pre id="js" class="layui-code" lay-encode="true" lay-skin="notepad">
+layui.use(['jquery', 'dropdown'], function ($, dropdown) {
+  var instance = dropdown.render({
+    dropdown: '#scene-select', // 确保唯一化
+    toggle: '.layui-select-title', // 确保唯一化
+    menu: '[data-role="menu"]', // 确保唯一化
+    trigger: 'click', // 因为是模仿 layui.select 所以我们不在使用 hover
+    className: {
+      hideAnimation: 'layui-anim layui-anim-downbit', // 为了区别原生渲染，加入一些动画，但是这里有一个小问题就是三角动画延迟了
+      showDropdown: 'layui-form-selected', // 配置菜单展开的样式类名
+      showMenu: '' // 移除菜单栏的样式类名，这样和 layui.select 展现方式一致
+    }
+  });
+
+  // 这块代码是为了实现 select 的动作效果，不能光有样儿，没有功能
+  var $input = $('#scene-select .layui-input')
+  $('[data-role="menu"]').on('click', 'dd', function() {
+    var $this = $(this);
+    var value = $this.attr('lay-value');
+    var text = $this.text();
+
+    $input.val(value ? $.trim(text) : ''); 
+    instance.hide();
+  });
+})
+</pre>
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px">
+  <legend>集成其他组件 <code>layui.tree</code></legend>
+</fieldset>
+<% include ./code/scene-treeselect %>
+<pre id="html2" class="layui-code" lay-encode="true" lay-skin="notepad">
+<% include ./code/scene-treeselect %>      
+</pre>
+<pre id="js2" class="layui-code" lay-encode="true" lay-skin="notepad">
+layui.use(['jquery', 'dropdown', 'tree'], function ($, dropdown, tree) {
+  var $input2 = $('#scene-treeselect .layui-input');
+  var instance2 = dropdown.render({
+    dropdown: '#scene-treeselect',
+    toggle: '.layui-select-title',
+    menu: '[data-role="menu"]',
+    trigger: 'click',
+    className: {
+      dropdownShow: 'layui-form-selected',
+      menuShow: ''
+    }
+  });
+  instance2.on(instance2.ON_SHOW, function(params) {
+    var visible = params.visible; // 每一次的开关都会触发事件
+    tree.reload('demo1'); // 这里我重新加载了树
+  });
+  // 此处渲染树
+  tree.render({
+    elem: '#scene-treeselect-tree',
+    data: data2, // 数据格式为 layui.tree 所要求的数据，layui 版本 2.5.0+
+    click: function(obj) {
+      var data = obj.data;
+      var value = data.id;
+      var text = data.title;
+      // 父级节点过滤掉
+      if (!data.children || !data.children.length) {
+        $input2.val(value ? $.trim(text) : ''); 
+      }
+    }
+  })
+})
+</pre>
+
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px">
+    <legend>配合样式修改制作 <code>tooltip</code></legend>
+</fieldset>
+<% include ./code/scene-tooltip %>
+<pre id="html3" class="layui-code" lay-encode="true" lay-skin="notepad">
+<% include ./code/scene-tooltip %>      
+</pre>
+<pre id="js3" class="layui-code" lay-encode="true" lay-skin="notepad">
+layui.use(['jquery', 'dropdown'], function ($, dropdown) {
+  $.each(['up', 'right', 'down', 'left'], function(i, item) {
+    dropdown.render({
+      dropdown: '#scene-tooltip-'.concat(item),
+      className: {
+        showAnimation: 'layui-anim layui-anim-fadein',
+        hideAnimation: 'layui-anim layui-anim-fadeout'
+      }
+    })
+  })
+})  
+</pre>
+<pre id="css3" class="layui-code" lay-encode="true" lay-skin="notepad">
+<% include ./code/scene-tooltip-style %>   
+</pre>
+
+</main>
+
+<script src="layui/layui.js"></script>
+<script>
+  var data2 = [{
+    title: '早餐'
+    ,id: 1
+    ,children: [{
+      title: '油条'
+      ,id: 5
+    },{
+      title: '包子'
+      ,id: 6
+    },{
+      title: '豆浆'
+      ,id: 7
+    }]
+  },{
+    title: '午餐'
+    ,id: 2
+    ,checked: true
+    ,children: [{
+      title: '藜蒿炒腊肉'
+      ,id: 8
+    },{
+      title: '西湖醋鱼'
+      ,id: 9
+    },{
+      title: '小白菜'
+      ,id: 10
+    },{
+      title: '海带排骨汤'
+      ,id: 11
+    }]
+  },{
+    title: '晚餐'
+    ,id: 3
+    ,children: [{
+      title: '红烧肉'
+      ,id: 12
+      ,fixed: true
+    },{
+      title: '番茄炒蛋'
+      ,id: 13
+    }]
+  },{
+    title: '夜宵'
+    ,id: 4
+    ,children: [{
+      title: '小龙虾'
+      ,id: 14
+      ,checked: true
+    },{
+      title: '香辣蟹'
+      ,id: 15
+      ,disabled: true
+    },{
+      title: '烤鱿鱼'
+      ,id: 16
+    }]
+  }];
+
+  layui.config({
+    base: './'
+  }).extend({
+    dropdown: 'dropdown'
+  }).use(['jquery', 'dropdown', 'code', 'tree'], function ($, dropdown, code, tree) {
+    code({elem: '#html', title: 'Html', about: false});
+    code({elem: '#js', title: 'JavaScript', about: false});
+    
+    code({elem: '#html2', title: 'Html', about: false});
+    code({elem: '#js2', title: 'JavaScript', about: false});
+
+    code({elem: '#html3', title: 'Html', about: false});
+    code({elem: '#js3', title: 'JavaScript', about: false});
+    code({elem: '#css3', title: 'Css', about: false});
+
+    // select
+    var instance = dropdown.render({
+      dropdown: '#scene-select',
+      toggle: '.layui-select-title',
+      menu: '[data-role="menu"]',
+      trigger: 'click',
+      className: {
+        hideAnimation: 'layui-anim layui-anim-downbit',
+        showDropdown: 'layui-form-selected',
+        showMenu: ''
+      }
+    });
+
+    var $input = $('#scene-select .layui-input');
+    $('[data-role="menu"]').on('click', 'dd', function() {
+      var $this = $(this);
+      var value = $this.attr('lay-value');
+      var text = $this.text();
+
+      $input.val(value ? $.trim(text) : ''); 
+      instance.hide();
+    });
+    
+
+    // treeselect
+    var $input2 = $('#scene-treeselect .layui-input');
+    var instance2 = dropdown.render({
+      dropdown: '#scene-treeselect',
+      toggle: '.layui-select-title',
+      menu: '[data-role="menu"]',
+      trigger: 'click',
+      className: {
+        dropdownShow: 'layui-form-selected',
+        menuShow: ''
+      }
+    });
+    instance2.on(instance2.ON_SHOW, function() {
+      tree.reload('demo1');
+    });
+
+    tree.render({
+      elem: '#scene-treeselect-tree',
+      data: data2,
+      id: 'demo1',
+      click: function(obj) {
+        var data = obj.data;
+        var value = data.id;
+        var text = data.title;
+
+        if (!data.children || !data.children.length) {
+          $input2.val(value ? $.trim(text) : '');
+          instance2.hide();
+        }
+      }
+    });
+
+    
+    // tooltip
+    $.each(['up', 'right', 'down', 'left'], function(i, item) {
+      dropdown.render({
+        dropdown: '#scene-tooltip-'.concat(item),
+        // trigger: 'click',
+        className: {
+          showAnimation: 'layui-anim layui-anim-fadein',
+          hideAnimation: 'layui-anim layui-anim-fadeout'
+        }
+      });
+    });
+  })
+</script>
+<% include ./partials/footer %>
