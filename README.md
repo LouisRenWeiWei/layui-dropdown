@@ -4,9 +4,7 @@
 
 ## Demo
 
-[`click me`](http://blog.hezulong.com/layui-dropdown/test)
-
-[`国内`](https://hezulong1.gitee.io/layui-dropdown)
+[`click me`](https://hezulong1.gitee.io/layui-dropdown)
 
 ## download
 
