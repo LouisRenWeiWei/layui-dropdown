@@ -1,4 +1,4 @@
-import { name } from './package.json';
+import { name } from '../package.json';
 import resolve from 'rollup-plugin-node-resolve';
 import babel from 'rollup-plugin-babel';
 import json from 'rollup-plugin-json';

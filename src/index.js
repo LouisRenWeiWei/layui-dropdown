@@ -2,13 +2,14 @@ import './polyfill';
 import layui from 'layui';
 import Popper from 'popper.js';
 import clickOutside from 'click-outside';
-import debounce from 'debounce';
 import { uid, whichAnimationEvent } from './util';
 import { version, name } from '../package.json';
 import './style.stylus';
 
 layui.define(['jquery'], function(exports) {
   const $ = layui.jquery;
+
+  const eventNamespace = `.${name}`;
 
   const ClassName = {
     DROPDOWN : 'layui-dropdown', // 容器
@@ -61,13 +62,13 @@ layui.define(['jquery'], function(exports) {
 
     function animationEndHandler() {
       $target.removeClass(animateName);
-      $target.off(whichAnimationEvent, animationEndHandler);
+      $target.off(whichAnimationEvent + eventNamespace, animationEndHandler);
 
       $.isFunction(callback) && callback();
     }
 
     animateName && whichAnimationEvent // 如果不支持动画特性，则直接触发
-      ? $target.on(whichAnimationEvent, animationEndHandler)
+      ? $target.on(whichAnimationEvent + eventNamespace, animationEndHandler)
       : animationEndHandler();
   }
 
@@ -81,7 +82,9 @@ layui.define(['jquery'], function(exports) {
       this._config = null;
       this._visible = false;
       this.ON_SHOW = '';
+      this.ON_SHOWED = '';
       this.ON_HIDE = '';
+      this.ON_HIDED = '';
       this.LAY_FILTER = '';
 
       this._init(options);
@@ -174,7 +177,7 @@ layui.define(['jquery'], function(exports) {
       this.emit(this.ON_SHOW);
     }
 
-    hide() {
+    hide(e) {
       const {
         showAnimation,
         hideAnimation,
@@ -208,9 +211,34 @@ layui.define(['jquery'], function(exports) {
     }
 
     _addEventListeners() {
+      const {
+        showDropdown
+      } = this._config.className;
       if (this._config.trigger === 'hover') {
-        this._$dropdown.on('mouseenter', $.proxy(debounce(this.show, this._config.showTimeout), this));
-        this._$dropdown.on('mouseleave', $.proxy(debounce(this.hide, this._config.hideTimeout), this));
+        this._$dropdown.on('mouseenter' + eventNamespace, () => {
+          clearTimeout(this.timer);
+          if (this._$dropdown.hasClass(showDropdown)) return;
+          this.timer = setTimeout($.proxy(this.show, this), this._config.showTimeout);
+        });
+        this._$dropdown.on('mouseleave' + eventNamespace, (e) => {
+          clearTimeout(this.timer);
+          if (this._$menu.is(e.relatedTarget) || this._$menu.has(e.relatedTarget).length) return;
+          this.timer = setTimeout($.proxy(this.hide, this), this._config.hideTimeout);
+        });
+
+        this._$menu.on('mouseenter' + eventNamespace, (e) => {
+          clearTimeout(this.timer);
+          if (this._$dropdown.hasClass(showDropdown)) return;
+          this.timer = setTimeout($.proxy(this.show, this), this._config.showTimeout);
+        });
+
+        this._$menu.on('mouseleave' + eventNamespace, (e) => {
+          clearTimeout(this.timer);
+          if (this._$dropdown.is(e.relatedTarget) || this._$dropdown.has(e.relatedTarget).length) return;
+          this.timer = setTimeout($.proxy(this.hide, this), this._config.hideTimeout);
+        });
+        // this._$dropdown.on('mouseenter.dropdown', $.proxy(debounce(this.show, this._config.showTimeout), this));
+        // this._$dropdown.on('mouseleave.dropdown', $.proxy(debounce(this.hide, this._config.hideTimeout), this));
       } else if (this._config.trigger === 'click') {
         this._$toggle.on('click', event => {
           event.preventDefault(); // 阻止本身事件

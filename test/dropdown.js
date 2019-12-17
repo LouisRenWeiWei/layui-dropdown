@@ -2672,6 +2672,7 @@
   Popper.Utils = (typeof window !== 'undefined' ? window : global).PopperUtils;
   Popper.placements = placements;
   Popper.Defaults = Defaults;
+  //# sourceMappingURL=popper.js.map
 
   function unwrapExports (x) {
   	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
@@ -3903,79 +3904,10 @@
   }
   module.exports = exports['default'];
 
-
+  //# sourceMappingURL=index.js.map
   });
 
   var clickOutside = unwrapExports(build);
-
-  /**
-   * Returns a function, that, as long as it continues to be invoked, will not
-   * be triggered. The function will be called after it stops being called for
-   * N milliseconds. If `immediate` is passed, trigger the function on the
-   * leading edge, instead of the trailing. The function also has a property 'clear' 
-   * that is a function which will clear the timer to prevent previously scheduled executions. 
-   *
-   * @source underscore.js
-   * @see http://unscriptable.com/2009/03/20/debouncing-javascript-methods/
-   * @param {Function} function to wrap
-   * @param {Number} timeout in ms (`100`)
-   * @param {Boolean} whether to execute at the beginning (`false`)
-   * @api public
-   */
-  function debounce$1(func, wait, immediate){
-    var timeout, args, context, timestamp, result;
-    if (null == wait) wait = 100;
-
-    function later() {
-      var last = Date.now() - timestamp;
-
-      if (last < wait && last >= 0) {
-        timeout = setTimeout(later, wait - last);
-      } else {
-        timeout = null;
-        if (!immediate) {
-          result = func.apply(context, args);
-          context = args = null;
-        }
-      }
-    }
-    var debounced = function(){
-      context = this;
-      args = arguments;
-      timestamp = Date.now();
-      var callNow = immediate && !timeout;
-      if (!timeout) timeout = setTimeout(later, wait);
-      if (callNow) {
-        result = func.apply(context, args);
-        context = args = null;
-      }
-
-      return result;
-    };
-
-    debounced.clear = function() {
-      if (timeout) {
-        clearTimeout(timeout);
-        timeout = null;
-      }
-    };
-    
-    debounced.flush = function() {
-      if (timeout) {
-        result = func.apply(context, args);
-        context = args = null;
-        
-        clearTimeout(timeout);
-        timeout = null;
-      }
-    };
-
-    return debounced;
-  }
-  // Adds compatibility for ES modules
-  debounce$1.debounce = debounce$1;
-
-  var debounce_1 = debounce$1;
 
   var uid = function uid() {
     return Math.random().toString(36).slice(4);
@@ -4004,6 +3936,7 @@
 
   layui.define(['jquery'], function (exports) {
     var $ = layui.jquery;
+    var eventNamespace = ".".concat(name);
     var ClassName = {
       DROPDOWN: 'layui-dropdown',
       // 容器
@@ -4063,12 +3996,12 @@
 
       function animationEndHandler() {
         $target.removeClass(animateName);
-        $target.off(whichAnimationEvent, animationEndHandler);
+        $target.off(whichAnimationEvent + eventNamespace, animationEndHandler);
         $.isFunction(callback) && callback();
       }
 
       animateName && whichAnimationEvent // 如果不支持动画特性，则直接触发
-      ? $target.on(whichAnimationEvent, animationEndHandler) : animationEndHandler();
+      ? $target.on(whichAnimationEvent + eventNamespace, animationEndHandler) : animationEndHandler();
     }
 
     var Dropdown =
@@ -4086,7 +4019,9 @@
         this._config = null;
         this._visible = false;
         this.ON_SHOW = '';
+        this.ON_SHOWED = '';
         this.ON_HIDE = '';
+        this.ON_HIDED = '';
         this.LAY_FILTER = '';
 
         this._init(options);
@@ -4187,7 +4122,7 @@
         }
       }, {
         key: "hide",
-        value: function hide() {
+        value: function hide(e) {
           var _this2 = this;
 
           var _this$_config$classNa2 = this._config.className,
@@ -4229,10 +4164,34 @@
         value: function _addEventListeners() {
           var _this3 = this;
 
-          if (this._config.trigger === 'hover') {
-            this._$dropdown.on('mouseenter', $.proxy(debounce_1(this.show, this._config.showTimeout), this));
+          var showDropdown = this._config.className.showDropdown;
 
-            this._$dropdown.on('mouseleave', $.proxy(debounce_1(this.hide, this._config.hideTimeout), this));
+          if (this._config.trigger === 'hover') {
+            this._$dropdown.on('mouseenter' + eventNamespace, function () {
+              clearTimeout(_this3.timer);
+              if (_this3._$dropdown.hasClass(showDropdown)) return;
+              _this3.timer = setTimeout($.proxy(_this3.show, _this3), _this3._config.showTimeout);
+            });
+
+            this._$dropdown.on('mouseleave' + eventNamespace, function (e) {
+              clearTimeout(_this3.timer);
+              if (_this3._$menu.is(e.relatedTarget) || _this3._$menu.has(e.relatedTarget).length) return;
+              _this3.timer = setTimeout($.proxy(_this3.hide, _this3), _this3._config.hideTimeout);
+            });
+
+            this._$menu.on('mouseenter' + eventNamespace, function (e) {
+              clearTimeout(_this3.timer);
+              if (_this3._$dropdown.hasClass(showDropdown)) return;
+              _this3.timer = setTimeout($.proxy(_this3.show, _this3), _this3._config.showTimeout);
+            });
+
+            this._$menu.on('mouseleave' + eventNamespace, function (e) {
+              clearTimeout(_this3.timer);
+              if (_this3._$dropdown.is(e.relatedTarget) || _this3._$dropdown.has(e.relatedTarget).length) return;
+              _this3.timer = setTimeout($.proxy(_this3.hide, _this3), _this3._config.hideTimeout);
+            }); // this._$dropdown.on('mouseenter.dropdown', $.proxy(debounce(this.show, this._config.showTimeout), this));
+            // this._$dropdown.on('mouseleave.dropdown', $.proxy(debounce(this.hide, this._config.hideTimeout), this));
+
           } else if (this._config.trigger === 'click') {
             this._$toggle.on('click', function (event) {
               event.preventDefault(); // 阻止本身事件

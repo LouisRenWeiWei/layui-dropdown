@@ -31,4 +31,4 @@ for (const { name, title, params } of files) {
   });
 }
 
-exists(asset('./lib/layui'), asset('./test/js/layui'), copy);
+// exists(asset('./lib/layui'), asset('./test/js/layui'), copy);

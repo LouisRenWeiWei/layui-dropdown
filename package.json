@@ -2,9 +2,9 @@
   "name": "dropdown",
   "version": "0.0.1",
   "scripts": {
-    "dev": "rollup -c script/build.js -w",
-    "build": "rollup -c script/build.js --environment NODE_ENV:production",
-    "build:dev": "rollup -c script/build.js --environment NODE_ENV:development",
+    "dev": "rollup -c scripts/build.js -w",
+    "build": "rollup -c scripts/build.js --environment NODE_ENV:production",
+    "build:dev": "rollup -c scripts/build.js --environment NODE_ENV:development",
     "docs": "node scripts/create-docs.js",
     "copy": "node scripts/copy-file.js"
   },
@@ -31,7 +31,6 @@
   },
   "dependencies": {
     "click-outside": "^2.0.2",
-    "debounce": "^1.2.0",
     "popper.js": "^1.16.0"
   },
   "browserslist": [
