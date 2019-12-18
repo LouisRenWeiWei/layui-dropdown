@@ -1,0 +1,102 @@
+$black: #000;
+$white: #fff;
+$border-color: #d2d2d2;
+$shadow: rgba($black, .12);
+$gutter: 5px;
+
+// dropdown
+.layui-dropdown {
+  position: relative;
+  display: inline-block;
+
+  // dropdown-menu
+  &-menu {
+    display: none;
+    z-index: 100;
+    min-width: 100%;
+    min-height: 1px;
+    margin: 0;
+    padding: 0;
+    border-radius: 2px;
+    border: 1px solid $border-color;
+    background-color: $white;
+    box-shadow: 0 2px 4px $shadow;
+    list-style: none;
+    box-sizing: border-box;
+
+    &:before {
+      content: "\20";
+      position: absolute;
+      display: block;
+      background-color: transparent;
+      z-index: -1;
+    }
+
+    &.is-show {
+      display: block;
+    }
+    
+    @each $prop, $value in (top bottom) (right left) (bottom top) (left right) {
+      &[x-placement^="#{$prop}"] {
+        margin-#{$value}: $gutter;
+
+        @if ($prop == top) {
+          box-shadow: 0 -1px 4px $shadow;
+        }
+
+        &:before {
+          #{$value}: -1 * $gutter;
+  
+          @if ($prop == top or $prop == bottom) {
+            width: 100%;
+            height: $gutter;
+            left: 0;
+          } @else {
+            width: $gutter;
+            height: 100%;
+            top: 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+[x-out-of-boundaries] {
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+}
+
+@include anim(layui-rightbit) {
+  0% {
+    transform: translate3d(30px,0,0);
+    opacity: .1;
+  }
+}
+
+@include anim(layui-leftbit) {
+  100% {
+    transform: translate3d(30px,0,0);
+    opacity: .1;
+  }
+}
+
+@include anim(layui-downbit) {
+  100% {
+    transform: translate3d(0,30px,0);
+    opacity: .3;
+  }
+}
+
+.layui-anim-rightbit {
+  animation-name: layui-rightbit;
+}
+
+.layui-anim-leftbit {
+  animation-name: layui-leftbit;
+}
+   
+.layui-anim-downbit {
+  animation-name: layui-downbit
+}
